@@ -7,14 +7,23 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import com.example.fittracker_android.FitTrackerApplication
 import com.example.fittracker_android.R
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
     private lateinit var emailTextView: TextView
-    private lateinit var logoutButton : Button
-    private val args: ProfileFragmentArgs by navArgs()
+    private lateinit var logoutButton: Button
+
+    // Get the shared ViewModel
+    private val viewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(
+            (requireActivity().application as FitTrackerApplication).userRepository
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,11 +39,23 @@ class ProfileFragment : Fragment() {
         emailTextView = view.findViewById(R.id.emailTextView)
         logoutButton = view.findViewById(R.id.logoutButton)
 
-        emailTextView.text = args.email
+        // Observe the current user
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentUser.collect { user ->
+                if (user != null) {
+                    // Show user data
+                    emailTextView.text = user.email
+                } else {
+                    // No user logged in, go back to login
+                    findNavController().navigate(R.id.loginFragment)
+                }
+            }
+        }
 
-        logoutButton.setOnClickListener{
-            val action = ProfileFragmentDirections.actionProfileToAuth()
-            findNavController().navigate(action)
+        // Handle logout
+        logoutButton.setOnClickListener {
+            viewModel.logout()
+            // Navigation will happen automatically when currentUser becomes null
         }
     }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AndroidAuthNavigationDemo</string>
     <string name="login">Login</string>
-    <string name="email">Email\n</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="profile">Profile</string>
     <string name="my_email">My email</string>
