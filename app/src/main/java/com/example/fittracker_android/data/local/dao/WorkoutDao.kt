@@ -19,7 +19,7 @@ interface WorkoutDao {
 
     //READ
     @Query("SELECT * FROM workouts WHERE id =:workoutId")
-    suspend fun getWOrkoutById(workoutId: String): WorkoutEntity?
+    suspend fun getWorkoutById(workoutId: String): WorkoutEntity?
 
     @Query("SELECT * FROM workouts WHERE userId = :userId ORDER BY timestamp DESC")
     fun getWorkoutsByUser(userId: String): Flow<List<WorkoutEntity>>
