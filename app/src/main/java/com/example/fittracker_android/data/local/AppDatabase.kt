@@ -5,45 +5,48 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.fittracker_android.data.local.converters.Converters
-import com.example.fittracker_android.data.local.dao.UserDao
-import com.example.fittracker_android.data.local.entities.UserEntity
+import com.example.fittracker_android.data.local.dao.*
+import com.example.fittracker_android.data.local.entities.*
 
 /**
- * The main database for the app
- *
- * @Database - Marks this as a Room database
- * entities - List of all tables in the database
- * version - Database version (increment when you change schema)
- *
- * This is like the "control center" for your database
+ * Simplified database without foreign key constraints for initial setup
  */
 @Database(
-    entities = [UserEntity::class],
-    version = 1,
+    entities = [
+        UserEntity::class,
+        ExerciseEntity::class,
+        WorkoutEntity::class,
+        WorkoutLogEntity::class,
+        ExerciseLogEntity::class,
+        ExerciseSetEntity::class,
+        UserProgressEntity::class
+    ],
+    version = 2, // Increment version when changing schema
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    // Abstract function to get the DAO
     abstract fun userDao(): UserDao
+    abstract fun exerciseDao(): ExerciseDao
+    abstract fun workoutDao(): WorkoutDao
+    abstract fun workoutLogDao(): WorkoutLogDao
+    abstract fun exerciseLogDao(): ExerciseLogDao
+    abstract fun exerciseSetDao(): ExerciseSetDao
+    abstract fun userProgressDao(): UserProgressDao
 
     companion object {
-        // Singleton prevents multiple instances of database opening at the same time
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
         fun getDatabase(context: Context): AppDatabase {
-            // If the INSTANCE is not null, return it
-            // If it is, create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "fitness_tracker_database"
                 )
-                    .fallbackToDestructiveMigration() // Recreates database if version changes
+                    .fallbackToDestructiveMigration() // Will recreate DB on schema changes
                     .build()
                 INSTANCE = instance
                 instance
