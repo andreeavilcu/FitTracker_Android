@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.fittracker_android.data.local.converters.Converters
 import com.example.fittracker_android.data.local.dao.UserDao
-import com.example.fittracker_android.data.local.entity.UserEntity
+import com.example.fittracker_android.data.local.entities.UserEntity
 
 /**
  * The main database for the app

@@ -1,4 +1,4 @@
-package com.example.fittracker_android.data.local
+package com.example.fittracker_android.data.local.converters
 
 import androidx.room.TypeConverter
 import com.example.fittracker_android.data.model.FitnessLevel

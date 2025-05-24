@@ -1,4 +1,4 @@
-package com.example.fittracker_android.data.local.entity
+package com.example.fittracker_android.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -20,6 +20,8 @@ data class UserEntity(
     val username: String,
     val email: String,
     val passwordHash: String, // We'll store hashed passwords, never plain text!
+
+
 
     // Physical attributes (nullable because user might not set them initially)
     val height: Float? = null,

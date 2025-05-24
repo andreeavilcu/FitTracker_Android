@@ -1,7 +1,7 @@
 package com.example.fittracker_android.data.local.dao
 
 import androidx.room.*
-import com.example.fittracker_android.data.local.entity.UserEntity
+import com.example.fittracker_android.data.local.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 /**

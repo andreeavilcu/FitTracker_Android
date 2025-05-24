@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.fittracker_android.data.local.entity.UserEntity
+import com.example.fittracker_android.data.local.entities.UserEntity
 import com.example.fittracker_android.data.model.FitnessLevel
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
                     passwordHash = hashPassword("password"),
                     age = 25,
                     fitnessLevel = FitnessLevel.BEGINNER,
+
                     isLoggedIn = false
                 )
                 app.database.userDao().insertUser(testUser)
