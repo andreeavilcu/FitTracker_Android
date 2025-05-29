@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +25,7 @@ class RegisterStep2Fragment : Fragment() {
     private lateinit var lastNameEditText: EditText
     private lateinit var ageEditText: EditText
     private lateinit var registerButton: Button
+    private lateinit var progressBar: ProgressBar
 
     private val args: RegisterStep2FragmentArgs by navArgs()
 
@@ -49,7 +52,7 @@ class RegisterStep2Fragment : Fragment() {
         lastNameEditText = view.findViewById(R.id.lastNameEditText)
         ageEditText = view.findViewById(R.id.ageEditText)
         registerButton = view.findViewById(R.id.registerButton)
-
+        progressBar = view.findViewById(R.id.progressBar)
         // Show the email from previous screen
         emailInfoTextView.text = "Selected email: ${args.email}"
 
@@ -82,7 +85,8 @@ class RegisterStep2Fragment : Fragment() {
             }
 
             // Get password from navigation args (passed from RegisterStep1)
-            val password = requireArguments().getString("password") ?: run {
+            val password = args.password
+            if (password.isEmpty()) {
                 Toast.makeText(context, "Password missing, please go back", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -101,6 +105,7 @@ class RegisterStep2Fragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 // Enable/disable button based on loading state
+                progressBar.isVisible = state.isLoading
                 registerButton.isEnabled = !state.isLoading
 
                 // Show error if any

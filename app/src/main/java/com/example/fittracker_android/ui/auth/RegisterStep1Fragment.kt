@@ -61,13 +61,12 @@ class RegisterStep1Fragment : Fragment() {
             }
 
             // Navigate to step 2 with email
-            val action = RegisterStep1FragmentDirections.actionRegisterStep1ToRegisterStep2(email)
+            val action = RegisterStep1FragmentDirections.actionRegisterStep1ToRegisterStep2(
+                email = email,
+                password = password
+            )
 
-            // Pass password through bundle (since it's not in the navigation args)
-            findNavController().navigate(action.actionId, bundleOf(
-                "email" to email,
-                "password" to password
-            ))
+            findNavController().navigate(action)
         }
     }
 }
