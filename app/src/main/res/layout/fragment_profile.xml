@@ -40,6 +40,21 @@
         app:layout_constraintTop_toTopOf="@+id/emailLabelTextView"
         tools:text="user@example.com"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/exercisesButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/browse_exercises"
+        android:textAllCaps="false"
+        app:icon="@android:drawable/ic_menu_manage"
+        app:iconGravity="start"
+        app:iconPadding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailLabelTextView" />
+
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="match_parent"

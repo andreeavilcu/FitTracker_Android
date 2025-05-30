@@ -10,15 +10,16 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface WorkoutDao {
-    //CREATE
+
+    // CREATE
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkout(workout: WorkoutEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkouts(workouts: List<WorkoutEntity>)
 
-    //READ
-    @Query("SELECT * FROM workouts WHERE id =:workoutId")
+    // READ
+    @Query("SELECT * FROM workouts WHERE id = :workoutId")
     suspend fun getWorkoutById(workoutId: String): WorkoutEntity?
 
     @Query("SELECT * FROM workouts WHERE userId = :userId ORDER BY timestamp DESC")
@@ -52,7 +53,7 @@ interface WorkoutDao {
     @Query("UPDATE workouts SET duration = :duration, caloriesBurned = :calories, updatedAt = :updatedAt WHERE id = :workoutId")
     suspend fun updateWorkoutStats(workoutId: String, duration: Int, calories: Int?, updatedAt: Long = System.currentTimeMillis())
 
-    //DELETE
+    // DELETE
     @Delete
     suspend fun deleteWorkout(workout: WorkoutEntity)
 
@@ -62,7 +63,7 @@ interface WorkoutDao {
     @Query("DELETE FROM workouts WHERE userId = :userId")
     suspend fun deleteAllWorkoutsByUser(userId: String)
 
-    //STATISTICS
+    // STATISTICS
     @Query("SELECT COUNT(*) FROM workouts WHERE userId = :userId AND isCompleted = 1")
     suspend fun getCompletedWorkoutCount(userId: String): Int
 

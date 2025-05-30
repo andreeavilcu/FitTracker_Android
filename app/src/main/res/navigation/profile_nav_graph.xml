@@ -16,5 +16,15 @@
         <action
             android:id="@+id/action_profile_to_auth"
             app:destination="@id/loginFragment" />
+
+        <action
+            android:id="@+id/action_profile_to_exercises"
+            app:destination="@id/exercisesFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/exercisesFragment"
+        android:name="com.example.fittracker_android.ui.exercises.ExercisesFragment"
+        android:label="Exercises"
+        tools:layout="@layout/fragment_exercises" />
 </navigation>

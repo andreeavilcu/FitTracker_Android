@@ -17,4 +17,48 @@
     <string name="last_name">Last Name</string>
     <string name="age">Age</string>
     <string name="first_name">First Name</string>
+
+    <!-- Exercise related strings -->
+    <string name="exercises">Exercises</string>
+    <string name="browse_exercises">Browse Exercises</string>
+    <string name="my_workouts">My Workouts</string>
+    <string name="track_progress">Track Progress</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="search_exercises">Search exercises…</string>
+    <string name="filter">Filter</string>
+    <string name="all_exercises">All</string>
+    <string name="strength_exercises">Strength</string>
+    <string name="cardio_exercises">Cardio</string>
+    <string name="flexibility_exercises">Flexibility</string>
+    <string name="balance_exercises">Balance</string>
+    <string name="no_exercises_found">No exercises found</string>
+    <string name="try_adjusting_search">Try adjusting your search or filters</string>
+    <string name="add_custom_exercise">Add custom exercise</string>
+    <string name="exercise_selected">Selected: %s</string>
+    <string name="advanced_filters_coming_soon">Advanced filters coming soon!</string>
+    <string name="add_exercise_coming_soon">Add custom exercise coming soon!</string>
+    <string name="exercises_feature_coming_soon">Exercises feature coming soon!</string>
+    <string name="workouts_feature_coming_soon">Workouts feature coming soon!</string>
+    <string name="progress_feature_coming_soon">Progress tracking coming soon!</string>
+
+    !-- Exercise types -->
+    <string name="exercise_type_strength">Strength</string>
+    <string name="exercise_type_cardio">Cardio</string>
+    <string name="exercise_type_flexibility">Flexibility</string>
+    <string name="exercise_type_balance">Balance</string>
+    <string name="exercise_type_plyometric">Plyometric</string>
+    <string name="exercise_type_calisthenics">Calisthenics</string>
+    <string name="exercise_type_sport">Sport</string>
+
+    <!-- Difficulty levels -->
+    <string name="difficulty_beginner">Beginner</string>
+    <string name="difficulty_intermediate">Intermediate</string>
+    <string name="difficulty_advanced">Advanced</string>
+    <string name="difficulty_expert">Expert</string>
+
+    <!-- Equipment -->
+    <string name="equipment_none">None</string>
+    <string name="equipment_required">Equipment: %s</string>
+    <string name="push_ups">Push-ups</string>
+    <string name="reps">3 x 12</string>
 </resources>

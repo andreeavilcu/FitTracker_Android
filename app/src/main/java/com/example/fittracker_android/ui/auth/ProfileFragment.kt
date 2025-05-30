@@ -6,17 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.fittracker_android.FitTrackerApplication
 import com.example.fittracker_android.R
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
     private lateinit var emailTextView: TextView
     private lateinit var logoutButton: Button
+    private lateinit var exercisesButton: MaterialButton
 
     // Get the shared ViewModel
     private val viewModel: AuthViewModel by viewModels {
@@ -36,26 +39,41 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        initializeViews(view)
+        setupClickListeners()
+        observeCurrentUser()
+
+
+    }
+
+    private fun initializeViews(view: View) {
         emailTextView = view.findViewById(R.id.emailTextView)
         logoutButton = view.findViewById(R.id.logoutButton)
+        exercisesButton = view.findViewById(R.id.exercisesButton)
+    }
 
-        // Observe the current user
+    private fun setupClickListeners() {
+        logoutButton.setOnClickListener {
+            viewModel.logout()
+        }
+
+        // NAVIGARE CĂTRE EXERCIȚII
+        exercisesButton.setOnClickListener {
+            // Creează un Bundle pentru a naviga către ExercisesFragment
+            findNavController().navigate(R.id.exercisesFragment)
+        }
+    }
+
+    private fun observeCurrentUser() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.currentUser.collect { user ->
                 if (user != null) {
-                    // Show user data
                     emailTextView.text = user.email
                 } else {
-                    // No user logged in, go back to login
                     findNavController().navigate(R.id.loginFragment)
                 }
             }
-        }
-
-        // Handle logout
-        logoutButton.setOnClickListener {
-            viewModel.logout()
-            // Navigation will happen automatically when currentUser becomes null
         }
     }
 }
