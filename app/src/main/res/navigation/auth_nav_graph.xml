@@ -54,6 +54,13 @@
                 android:name="email"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_register_step2_to_login"
+            app:destination="@id/loginFragment">
+            <argument
+                android:name="email"
+                app:argType="string" />
+        </action>
         <argument
             android:name="email"
             app:argType="string" />

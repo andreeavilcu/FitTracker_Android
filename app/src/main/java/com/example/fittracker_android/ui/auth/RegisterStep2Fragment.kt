@@ -116,7 +116,18 @@ class RegisterStep2Fragment : Fragment() {
 
                 // Navigate to profile if registration successful
                 if (state.isLoggedIn) {
-                    val action = RegisterStep2FragmentDirections.actionRegisterStep2ToProfile(args.email)
+                    // Show success message
+                    Toast.makeText(
+                        context,
+                        "Registration successful! Please login with your credentials.",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    viewModel.logout()
+
+                    val action = RegisterStep2FragmentDirections.actionRegisterStep2ToLogin(
+                        email = args.email
+                    )
                     findNavController().navigate(action)
                 }
             }
