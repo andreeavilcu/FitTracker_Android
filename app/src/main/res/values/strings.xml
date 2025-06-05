@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidAuthNavigationDemo</string>
+    <string name="app_name">FitTracker</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -61,4 +61,6 @@
     <string name="equipment_required">Equipment: %s</string>
     <string name="push_ups">Push-ups</string>
     <string name="reps">3 x 12</string>
+
+
 </resources>
