@@ -61,6 +61,27 @@
     <string name="equipment_required">Equipment: %s</string>
     <string name="push_ups">Push-ups</string>
     <string name="reps">3 x 12</string>
+    <string name="strength">strength</string>
+    <string name="exercise_name">Exercise Name</string>
+    <string name="level_name">Level: Begginer</string>
+    <string name="muscles">Muscles: Chest, Shoulders, Triceps</string>
+    <string name="instructions">Muscles: Chest, Shoulders, Triceps</string>
+    <string name="apple">Apple</string>
+    <string name="kcal">95 kcal</string>
+    <string name="serving">Serving: 100g</string>
+    <string name="protein">Protein: 0.3g</string>
+    <string name="carbs">Carbs: 25g</string>
+    <string name="fat">Fat: 0.2g</string>
+    <string name="external_fitness_data">External Fitness Data</string>
+    <string name="external_exercises">External Exercises</string>
+    <string name="chest">Chest</string>
+    <string name="back">Back</string>
+    <string name="legs">Legs</string>
+    <string name="arms">Arms</string>
+    <string name="enter_food_name">Enter food name...</string>
+    <string name="search">Search</string>
+    <string name="nutrtion_info">Nutrition info</string>
+    <string name="nutrition_info">Nutrtion info</string>
 
 
 </resources>

@@ -20,6 +20,9 @@ class ProfileFragment : Fragment() {
     private lateinit var emailTextView: TextView
     private lateinit var logoutButton: Button
     private lateinit var exercisesButton: MaterialButton
+    private lateinit var apiDataButton: MaterialButton
+    private lateinit var workoutsButton: MaterialButton
+    private lateinit var progressButton: MaterialButton
 
     // Get the shared ViewModel
     private val viewModel: AuthViewModel by viewModels {
@@ -51,6 +54,9 @@ class ProfileFragment : Fragment() {
         emailTextView = view.findViewById(R.id.emailTextView)
         logoutButton = view.findViewById(R.id.logoutButton)
         exercisesButton = view.findViewById(R.id.exercisesButton)
+        apiDataButton = view.findViewById(R.id.apiDataButton) // ADĂUGAT
+        workoutsButton = view.findViewById(R.id.workoutsButton)
+        progressButton = view.findViewById(R.id.progressButton)
     }
 
     private fun setupClickListeners() {
@@ -58,10 +64,24 @@ class ProfileFragment : Fragment() {
             viewModel.logout()
         }
 
-        // NAVIGARE CĂTRE EXERCIȚII
+        // Navigare către exerciții locale
         exercisesButton.setOnClickListener {
-            // Creează un Bundle pentru a naviga către ExercisesFragment
             findNavController().navigate(R.id.exercisesFragment)
+        }
+
+        // ADĂUGAT - Navigare către date externe API
+        apiDataButton.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_to_api_data)
+        }
+
+        // Placeholder pentru workout-uri
+        workoutsButton.setOnClickListener {
+            Toast.makeText(context, "Workouts feature coming soon!", Toast.LENGTH_SHORT).show()
+        }
+
+        // Placeholder pentru progress
+        progressButton.setOnClickListener {
+            Toast.makeText(context, "Progress tracking coming soon!", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_profile_to_exercises"
             app:destination="@id/exercisesFragment" />
+        <action
+            android:id="@+id/action_profile_to_api_data"
+            app:destination="@id/apiDataFragment" />
     </fragment>
 
     <fragment
@@ -27,4 +30,10 @@
         android:name="com.example.fittracker_android.ui.exercises.ExercisesFragment"
         android:label="Exercises"
         tools:layout="@layout/fragment_exercises" />
+
+    <fragment
+        android:id="@+id/apiDataFragment"
+        android:name="com.example.fittracker_android.data.api.ApiDataFragment"
+        android:label="External Data"
+        tools:layout="@layout/fragment_api_data" />
 </navigation>
