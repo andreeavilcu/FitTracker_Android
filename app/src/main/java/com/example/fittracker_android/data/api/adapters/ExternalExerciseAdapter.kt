@@ -42,22 +42,27 @@ class ExternalExerciseAdapter(
         private val chipCategory: Chip = itemView.findViewById(R.id.chipCategory)
 
         fun bind(exercise: ExerciseApiModel) {
-            textExerciseName.text = exercise.name
-            textDifficulty.text = "Level: ${exercise.level}"
+            // FIXED: Gestionează toate câmpurile nullable
+            textExerciseName.text = exercise.name ?: "Unknown Exercise"
+            textDifficulty.text = "Level: ${exercise.level ?: "Unknown"}"
             textEquipment.text = "Equipment: ${exercise.equipment ?: "None"}"
 
-            val muscles = (exercise.primaryMuscles + exercise.secondaryMuscles)
+            // FIXED: Folosind helper function pentru a evita null pointer exception
+            val muscles = exercise.getAllMuscles()
                 .joinToString(", ") { it.replaceFirstChar { c -> c.uppercase() } }
-            textMuscles.text = "Muscles: $muscles"
+            textMuscles.text = if (muscles.isNotEmpty()) "Muscles: $muscles" else "Muscles: Not specified"
 
-            val instructions = if (exercise.instructions.length > 100) {
-                exercise.instructions.take(100) + "..."
-            } else {
-                exercise.instructions
-            }
+            // FIXED: Gestionează cazul când instructions este null
+            val instructions = exercise.instructions?.let { instr ->
+                if (instr.length > 100) {
+                    instr.take(100) + "..."
+                } else {
+                    instr
+                }
+            } ?: "No instructions available"
             textInstructions.text = instructions
 
-            chipCategory.text = exercise.category.replaceFirstChar { it.uppercase() }
+            chipCategory.text = (exercise.category ?: "General").replaceFirstChar { it.uppercase() }
 
             itemView.setOnClickListener {
                 onExerciseClick(exercise)
@@ -67,7 +72,8 @@ class ExternalExerciseAdapter(
 
     private class ExerciseDiffCallback : DiffUtil.ItemCallback<ExerciseApiModel>() {
         override fun areItemsTheSame(oldItem: ExerciseApiModel, newItem: ExerciseApiModel): Boolean {
-            return oldItem.name == newItem.name
+            // FIXED: Gestionează cazul când name poate fi null
+            return (oldItem.name ?: "") == (newItem.name ?: "")
         }
 
         override fun areContentsTheSame(oldItem: ExerciseApiModel, newItem: ExerciseApiModel): Boolean {

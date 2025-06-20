@@ -26,24 +26,31 @@ data class ExerciseApiModel(
     @SerializedName("equipment")
     val equipment: String?,
 
+    // FIXED: Făcut nullable pentru a evita crash-ul
     @SerializedName("primaryMuscles")
-    val primaryMuscles: List<String>,
+    val primaryMuscles: List<String>?,
 
     @SerializedName("secondaryMuscles")
-    val secondaryMuscles: List<String>,
+    val secondaryMuscles: List<String>?,
 
-    // SCHIMBAT: instructions ca String în loc de List<String>
     @SerializedName("instructions")
-    val instructions: String,  // 👈 CORECTAT: String în loc de List<String>
+    val instructions: String,
 
     @SerializedName("category")
     val category: String,
 
     @SerializedName("images")
-    val images: List<String>
+    val images: List<String>?
 ) {
     // Helper function pentru a obține instrucțiunile ca listă
     fun getInstructionsList(): List<String> {
         return instructions.split(". ").filter { it.isNotBlank() }
+    }
+
+    // Helper function pentru a obține toate grupurile musculare în siguranță
+    fun getAllMuscles(): List<String> {
+        val primary = primaryMuscles ?: emptyList()
+        val secondary = secondaryMuscles ?: emptyList()
+        return primary + secondary
     }
 }
