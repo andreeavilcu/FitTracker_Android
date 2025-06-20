@@ -2,6 +2,7 @@ package com.example.fittracker_android
 
 import android.app.Application
 import com.example.fittracker_android.data.local.AppDatabase
+import com.example.fittracker_android.data.local.UserPreferencesManager
 import com.example.fittracker_android.data.repository.ExerciseRepository
 import com.example.fittracker_android.data.repository.UserRepository
 import com.example.fittracker_android.data.repository.UserProgressRepository
@@ -25,6 +26,8 @@ class FitTrackerApplication : Application() {
 
     // Repositories
     val userRepository by lazy { UserRepository(database.userDao()) }
+
+    val userPreferencesManager by lazy { UserPreferencesManager(this) }
 
     val exerciseRepository by lazy { ExerciseRepository(database.exerciseDao()) }
 

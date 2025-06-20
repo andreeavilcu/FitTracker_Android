@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fittracker_android.FitTrackerApplication
@@ -115,7 +116,16 @@ class ExercisesFragment: Fragment() {
         }
 
         fabAddExercise.setOnClickListener {
-            Toast.makeText(context, "Add custom exercise coming soon!", Toast.LENGTH_SHORT).show()
+            try {
+                findNavController().navigate(R.id.action_exercises_to_add_exercise)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Navigation error: ${e.message}", Toast.LENGTH_LONG).show()
+                // Fallback - creează fragmentul manual
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment, AddExerciseFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
     }
 

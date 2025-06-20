@@ -29,7 +29,17 @@
         android:id="@+id/exercisesFragment"
         android:name="com.example.fittracker_android.ui.exercises.ExercisesFragment"
         android:label="Exercises"
-        tools:layout="@layout/fragment_exercises" />
+        tools:layout="@layout/fragment_exercises">
+        <action
+            android:id="@+id/action_exercises_to_add_exercise"
+            app:destination="@id/addExerciseFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addExerciseFragment"
+        android:name="com.example.fittracker_android.ui.exercises.AddExerciseFragment"
+        android:label="Add Exercise"
+        tools:layout="@layout/fragment_add_exercise" />
 
     <fragment
         android:id="@+id/apiDataFragment"

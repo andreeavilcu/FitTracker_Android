@@ -168,10 +168,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:contentDescription="@string/add_custom_exercise"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="Add Exercise"
+        android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="#9C27B0"
+        android:tint="@color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:pressedTranslationZ="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="@color/white" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
