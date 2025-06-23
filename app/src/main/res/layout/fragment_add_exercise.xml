@@ -266,15 +266,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/button_gradient"
-            android:text="Save Exercise"
-            android:textColor="@color/white"
+            android:background="@drawable/button_selector"
+            android:text="@string/save_exercise"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/instructionsInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/instructionsInputLayout"
+            android:textColor="@color/purple_text_selector"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

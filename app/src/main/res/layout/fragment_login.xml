@@ -64,6 +64,8 @@
         android:text="@string/do_login"
         app:layout_constraintBottom_toTopOf="@+id/goToRegisterButton"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button_selector"
+        android:textColor="@color/purple_text_selector"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button

@@ -16,6 +16,7 @@ import com.example.fittracker_android.FitTrackerApplication
 import com.example.fittracker_android.R
 import com.example.fittracker_android.data.api.adapters.ExternalExerciseAdapter
 import com.example.fittracker_android.data.api.adapters.NutritionAdapter
+import com.example.fittracker_android.data.api.adapters.QuoteAdapter
 import com.example.fittracker_android.data.repository.ApiRepository
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.ChipGroup
@@ -27,14 +28,17 @@ class ApiDataFragment : Fragment() {
 
     private lateinit var recyclerViewExercises: RecyclerView
     private lateinit var recyclerViewNutrition: RecyclerView
+    private lateinit var recyclerViewQuotes: RecyclerView // ✨ ADAUGĂ
     private lateinit var searchEditText: TextInputEditText
     private lateinit var nutritionSearchEditText: TextInputEditText
     private lateinit var chipGroupMuscles: ChipGroup
     private lateinit var progressIndicator: LinearProgressIndicator
     private lateinit var buttonSearchNutrition: MaterialButton
+    private lateinit var buttonLoadQuotes: MaterialButton // ✨ ADAUGĂ
 
     private lateinit var externalExerciseAdapter: ExternalExerciseAdapter
     private lateinit var nutritionAdapter: NutritionAdapter
+    private lateinit var quoteAdapter: QuoteAdapter // ✨ ADAUGĂ
 
     private val viewModel: ApiDataViewModel by viewModels {
         ApiDataViewModelFactory(ApiRepository())
@@ -56,18 +60,20 @@ class ApiDataFragment : Fragment() {
         setupSearch()
         observeViewModel()
 
-        // Încarcă câteva exerciții implicit
+        // Load default data
         viewModel.loadExercisesByMuscle("chest")
     }
 
     private fun initializeViews(view: View) {
         recyclerViewExercises = view.findViewById(R.id.recyclerViewExercises)
         recyclerViewNutrition = view.findViewById(R.id.recyclerViewNutrition)
+        recyclerViewQuotes = view.findViewById(R.id.recyclerViewQuotes) // ✨ ADAUGĂ
         searchEditText = view.findViewById(R.id.searchEditText)
         nutritionSearchEditText = view.findViewById(R.id.nutritionSearchEditText)
         chipGroupMuscles = view.findViewById(R.id.chipGroupMuscles)
         progressIndicator = view.findViewById(R.id.progressIndicator)
         buttonSearchNutrition = view.findViewById(R.id.buttonSearchNutrition)
+        buttonLoadQuotes = view.findViewById(R.id.buttonLoadQuotes) // ✨ ADAUGĂ
     }
 
     private fun setupRecyclerViews() {
@@ -88,8 +94,15 @@ class ApiDataFragment : Fragment() {
             adapter = nutritionAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
-    }
 
+        // ✨ ADAUGĂ: Setup Quotes RecyclerView
+        quoteAdapter = QuoteAdapter()
+
+        recyclerViewQuotes.apply {
+            adapter = quoteAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
 
     private fun setupSearch() {
         // Muscle group chips
@@ -102,6 +115,7 @@ class ApiDataFragment : Fragment() {
             }
         }
 
+        // Nutrition search
         buttonSearchNutrition.setOnClickListener {
             val foodName = nutritionSearchEditText.text.toString().trim()
             if (foodName.isNotEmpty()) {
@@ -109,6 +123,10 @@ class ApiDataFragment : Fragment() {
             }
         }
 
+        // ✨ ADAUGĂ: Quotes button
+        buttonLoadQuotes.setOnClickListener {
+            viewModel.loadMotivationalQuotes()
+        }
     }
 
     private fun observeViewModel() {
@@ -134,7 +152,12 @@ class ApiDataFragment : Fragment() {
                 nutritionAdapter.submitList(nutrition)
             }
         }
+
+        // ✨ ADAUGĂ: Observe quotes
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.motivationalQuotes.collect { quotes ->
+                quoteAdapter.submitList(quotes)
+            }
+        }
     }
-
-
 }

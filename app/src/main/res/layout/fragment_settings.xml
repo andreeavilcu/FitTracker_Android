@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="🎨 Appearance"
+            android:text="@string/appearance"
             android:textColor="#9C27B0"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -65,7 +65,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="🌙 Dark Mode"
+                        android:text="@string/dark_mode"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -104,8 +104,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Metric"
-                        android:textColor="#9C27B0"
-                        app:strokeColor="#9C27B0" />
+                        app:strokeColor="#9C27B0"
+                        android:background="@drawable/button_selector"
+                        android:textColor="@color/purple_text_selector"/>
 
                 </LinearLayout>
 
@@ -119,7 +120,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="🔔 Notifications"
+            android:text="@string/notifications"
             android:textColor="#9C27B0"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -178,7 +179,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="🏋️ Workout Settings"
+            android:text="@string/workout_settings"
             android:textColor="#9C27B0"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -223,7 +224,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="60s"
-                        android:textColor="#9C27B0"
+                        android:background="@drawable/button_selector"
+                        android:textColor="@color/purple_text_selector"
                         app:strokeColor="#9C27B0" />
 
                 </LinearLayout>
@@ -254,8 +256,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3 workouts"
-                        android:textColor="#9C27B0"
-                        app:strokeColor="#9C27B0" />
+                        app:strokeColor="#9C27B0"
+                        android:background="@drawable/button_selector"
+                        android:textColor="@color/purple_text_selector"/>
 
                 </LinearLayout>
 

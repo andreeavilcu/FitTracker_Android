@@ -7,9 +7,14 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface QuoteApiService {
+
+    // ✅ VERSIUNEA CORECTĂ - fără API key manual și fără categorie
     @GET("quotes")
-    suspend fun getMotivationalQuotes(
-        @Header("X-Api-Key") apiKey: String,
-        @Query("category") category: String = "fitness"
+    suspend fun getMotivationalQuotes(): Response<List<QuoteApiModel>>
+
+    // 🎯 VERSIUNEA CU CATEGORIE OPȚIONALĂ (dacă vrem să testăm categorii)
+    @GET("quotes")
+    suspend fun getQuotesByCategory(
+        @Query("category") category: String
     ): Response<List<QuoteApiModel>>
 }

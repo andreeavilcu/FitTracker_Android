@@ -33,22 +33,61 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleApiData"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@id/titleApiData" />
 
-        <!-- Exercise Section -->
+        <!-- ✨ ADAUGĂ: Motivational Quotes Section -->
         <TextView
-            android:id="@+id/titleExercises"
+            android:id="@+id/titleQuotes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/external_exercises"
+            android:text="💭 Motivational Quotes"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/progressIndicator" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLoadQuotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="✨ Get Motivated!"
+            android:backgroundTint="#FF9800"
+            android:textColor="@color/white"
+            app:icon="@android:drawable/ic_menu_send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleQuotes" />
+
+        <!-- Quotes RecyclerView (Horizontal) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewQuotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonLoadQuotes"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_quote" />
+
+        <!-- Exercise Section -->
+        <TextView
+            android:id="@+id/titleExercises"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/external_exercises"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewQuotes" />
 
         <!-- Muscle Group Chips -->
         <HorizontalScrollView
@@ -102,28 +141,6 @@
 
         </HorizontalScrollView>
 
-        <!-- Search Input (hidden for now) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/searchInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/search_exercises"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chipScrollView">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/searchEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <!-- External Exercises RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewExercises"
@@ -173,8 +190,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColor="@color/black"
-                android:textColorHint="@android:color/darker_gray" />
+                android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

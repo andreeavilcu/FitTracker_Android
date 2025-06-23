@@ -82,6 +82,11 @@
     <string name="search">Search</string>
     <string name="nutrtion_info">Nutrition info</string>
     <string name="nutrition_info">Nutrtion info</string>
+    <string name="save_exercise">Save Exercise</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_mode">🌙 Dark Mode</string>
+    <string name="notifications">Notifications</string>
+    <string name="workout_settings">Workout Settings\n</string>
 
 
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Pressed state - darker purple -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#6A1B9A"
+                android:endColor="#4A148C"
+                android:angle="45" />
+            <corners android:radius="12dp" />
+            <stroke android:width="2dp" android:color="#4A148C" />
+        </shape>
+    </item>
+
+    <!-- Focused state - medium purple -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#8E24AA"
+                android:endColor="#6A1B9A"
+                android:angle="45" />
+            <corners android:radius="12dp" />
+            <stroke android:width="2dp" android:color="#6A1B9A" />
+        </shape>
+    </item>
+
+    <!-- Default state - matches your existing button_gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#9C27B0"
+                android:endColor="#6A1B9A"
+                android:angle="45" />
+            <corners android:radius="12dp" />
+            <stroke android:width="1dp" android:color="#4A148C" />
+        </shape>
+    </item>
+</selector>

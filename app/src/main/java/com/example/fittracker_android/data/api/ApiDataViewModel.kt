@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.fittracker_android.data.api.model.ExerciseApiModel
 import com.example.fittracker_android.data.api.model.NutritionApiModel
+import com.example.fittracker_android.data.api.model.QuoteApiModel
 import com.example.fittracker_android.data.repository.ApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +28,33 @@ class ApiDataViewModel(
 
     private val _nutritionData = MutableStateFlow<List<NutritionApiModel>>(emptyList())
     val nutritionData: StateFlow<List<NutritionApiModel>> = _nutritionData.asStateFlow()
+
+    private val _motivationalQuotes = MutableStateFlow<List<QuoteApiModel>>(emptyList())
+    val motivationalQuotes: StateFlow<List<QuoteApiModel>> = _motivationalQuotes.asStateFlow()
+
+    fun loadMotivationalQuotes() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+
+            android.util.Log.d("ApiDataViewModel", "🚀 Starting to load motivational quotes...")
+
+            val result = apiRepository.getMotivationalQuotes()
+
+            _uiState.value = if (result.isSuccess) {
+                val quotes = result.getOrElse { emptyList() }
+                android.util.Log.d("ApiDataViewModel", "✅ Successfully loaded ${quotes.size} quotes")
+                _motivationalQuotes.value = quotes
+                _uiState.value.copy(isLoading = false)
+            } else {
+                val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                android.util.Log.e("ApiDataViewModel", "❌ Failed to load quotes: $error")
+                _uiState.value.copy(
+                    isLoading = false,
+                    error = "Failed to load quotes: $error"
+                )
+            }
+        }
+    }
 
     /**
      * Încarcă exerciții externe pe baza grupului muscular

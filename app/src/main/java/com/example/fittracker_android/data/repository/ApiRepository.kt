@@ -75,17 +75,20 @@ class ApiRepository {
     suspend fun getMotivationalQuotes(): Result<List<QuoteApiModel>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = ApiManager.quoteApiService.getMotivationalQuotes(ApiManager.API_KEY)
+                val response = ApiManager.quoteApiService.getMotivationalQuotes()
+
                 if (response.isSuccessful) {
                     Result.success(response.body() ?: emptyList())
                 } else {
-                    Result.failure(Exception("Quotes API Error: ${response.code()}"))
+                    // 📊 Logging pentru debugging
+                    android.util.Log.e("ApiRepository", "Quotes API Error: ${response.code()} - ${response.message()}")
+                    Result.failure(Exception("Quotes API Error: ${response.code()} - ${response.message()}"))
                 }
             } catch (e: Exception) {
+                android.util.Log.e("ApiRepository", "Quotes Network Error: ${e.message}")
                 Result.failure(e)
             }
         }
-    }
 
-
+}
 }
