@@ -125,7 +125,7 @@ class ApiDataFragment : Fragment() {
 
         // ✨ ADAUGĂ: Quotes button
         buttonLoadQuotes.setOnClickListener {
-            viewModel.loadMotivationalQuotes()
+            viewModel.loadDefaultQuotes()
         }
     }
 

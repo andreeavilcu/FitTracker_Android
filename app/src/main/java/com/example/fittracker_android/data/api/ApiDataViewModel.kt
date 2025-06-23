@@ -98,6 +98,32 @@ class ApiDataViewModel(
         }
     }
 
+    fun loadDefaultQuotes() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+
+            android.util.Log.d("ApiDataViewModel", "📚 Loading default quotes only...")
+
+            val result = apiRepository.loadDefaultQuotesOnly()
+
+            _uiState.value = if (result.isSuccess) {
+                val quotes = result.getOrElse { emptyList() }
+                android.util.Log.d("ApiDataViewModel", "✅ Loaded ${quotes.size} default quotes")
+                _motivationalQuotes.value = quotes
+                _uiState.value.copy(isLoading = false)
+            } else {
+                val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                android.util.Log.e("ApiDataViewModel", "❌ Failed to load default quotes: $error")
+                _uiState.value.copy(
+                    isLoading = false,
+                    error = "Failed to load default quotes: $error"
+                )
+            }
+        }
+    }
+
+
+
     /**
      * Încarcă informații nutriționale pentru o mâncare
      */
@@ -134,6 +160,7 @@ class ApiDataViewModel(
     fun clearData() {
         _externalExercises.value = emptyList()
         _nutritionData.value = emptyList()
+        _motivationalQuotes.value = emptyList()
         _uiState.value = ApiUiState()
     }
 

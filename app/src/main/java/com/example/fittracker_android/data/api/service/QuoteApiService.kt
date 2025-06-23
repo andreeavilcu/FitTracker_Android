@@ -8,13 +8,7 @@ import retrofit2.http.Query
 
 interface QuoteApiService {
 
-    // ✅ VERSIUNEA CORECTĂ - fără API key manual și fără categorie
+    // QuoteApiService.kt - versiunea corectă
     @GET("quotes")
     suspend fun getMotivationalQuotes(): Response<List<QuoteApiModel>>
-
-    // 🎯 VERSIUNEA CU CATEGORIE OPȚIONALĂ (dacă vrem să testăm categorii)
-    @GET("quotes")
-    suspend fun getQuotesByCategory(
-        @Query("category") category: String
-    ): Response<List<QuoteApiModel>>
 }
