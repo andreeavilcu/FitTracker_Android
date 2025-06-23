@@ -1,0 +1,159 @@
+Index: app/src/main/java/com/example/fittracker_android/ui/auth/ProfileFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.fittracker_android.ui.auth\r\n\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.Button\r\nimport android.widget.TextView\r\nimport android.widget.Toast\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.fragment.app.viewModels\r\nimport androidx.lifecycle.lifecycleScope\r\nimport androidx.navigation.fragment.findNavController\r\nimport com.example.fittracker_android.FitTrackerApplication\r\nimport com.example.fittracker_android.R\r\nimport com.google.android.material.button.MaterialButton\r\nimport kotlinx.coroutines.launch\r\n\r\nclass ProfileFragment : Fragment() {\r\n    private lateinit var emailTextView: TextView\r\n    private lateinit var logoutButton: Button\r\n    private lateinit var exercisesButton: MaterialButton\r\n    private lateinit var apiDataButton: MaterialButton\r\n    private lateinit var workoutsButton: MaterialButton\r\n    private lateinit var progressButton: MaterialButton\r\n    private lateinit var settingsButton: MaterialButton\r\n\r\n    // Get the shared ViewModel\r\n    private val viewModel: AuthViewModel by viewModels {\r\n        AuthViewModelFactory(\r\n            (requireActivity().application as FitTrackerApplication).userRepository\r\n        )\r\n    }\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater,\r\n        container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.fragment_profile, container, false)\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n\r\n        initializeViews(view)\r\n        setupClickListeners()\r\n        observeCurrentUser()\r\n    }\r\n\r\n    private fun initializeViews(view: View) {\r\n        emailTextView = view.findViewById(R.id.emailTextView)\r\n        logoutButton = view.findViewById(R.id.logoutButton)\r\n        exercisesButton = view.findViewById(R.id.exercisesButton)\r\n        apiDataButton = view.findViewById(R.id.apiDataButton)\r\n        workoutsButton = view.findViewById(R.id.workoutsButton)\r\n        progressButton = view.findViewById(R.id.progressButton)\r\n        settingsButton = view.findViewById(R.id.settingsButton)\r\n    }\r\n\r\n    private fun setupClickListeners() {\r\n        logoutButton.setOnClickListener {\r\n            viewModel.logout()\r\n        }\r\n\r\n        // Navigate to local exercises\r\n        exercisesButton.setOnClickListener {\r\n            findNavController().navigate(R.id.exercisesFragment)\r\n        }\r\n\r\n        // Navigate to external API data\r\n        apiDataButton.setOnClickListener {\r\n            findNavController().navigate(R.id.action_profile_to_api_data)\r\n        }\r\n\r\n        // Navigate to Settings\r\n        settingsButton.setOnClickListener {\r\n            findNavController().navigate(R.id.action_profile_to_settings)\r\n        }\r\n\r\n        // My Workouts - Coming Soon\r\n        workoutsButton.setOnClickListener {\r\n            Toast.makeText(context, \"\uD83C\uDFCB\uFE0F My Workouts feature coming soon!\", Toast.LENGTH_SHORT).show()\r\n        }\r\n\r\n        // Track Progress - Coming Soon\r\n        progressButton.setOnClickListener {\r\n            Toast.makeText(context, \"\uD83D\uDCCA Progress tracking feature coming soon!\", Toast.LENGTH_SHORT).show()\r\n        }\r\n    }\r\n\r\n    private fun observeCurrentUser() {\r\n        viewLifecycleOwner.lifecycleScope.launch {\r\n            viewModel.currentUser.collect { user ->\r\n                if (user != null) {\r\n                    emailTextView.text = user.email\r\n                } else {\r\n                    findNavController().navigate(R.id.loginFragment)\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/fittracker_android/ui/auth/ProfileFragment.kt b/app/src/main/java/com/example/fittracker_android/ui/auth/ProfileFragment.kt
+--- a/app/src/main/java/com/example/fittracker_android/ui/auth/ProfileFragment.kt	(revision 0df42878a911a0bc298d40793c169e2161514bfe)
++++ b/app/src/main/java/com/example/fittracker_android/ui/auth/ProfileFragment.kt	(date 1750703768197)
+@@ -1,5 +1,6 @@
+ package com.example.fittracker_android.ui.auth
+ 
++import android.app.AlertDialog
+ import android.os.Bundle
+ import android.view.LayoutInflater
+ import android.view.View
+@@ -13,6 +14,7 @@
+ import androidx.navigation.fragment.findNavController
+ import com.example.fittracker_android.FitTrackerApplication
+ import com.example.fittracker_android.R
++import com.example.fittracker_android.data.local.Units
+ import com.google.android.material.button.MaterialButton
+ import kotlinx.coroutines.launch
+ 
+@@ -23,7 +25,12 @@
+     private lateinit var apiDataButton: MaterialButton
+     private lateinit var workoutsButton: MaterialButton
+     private lateinit var progressButton: MaterialButton
+-    private lateinit var settingsButton: MaterialButton
++    private lateinit var settingsButton: MaterialButton // ADDED: Settings button
++
++    // SharedPreferences Manager
++    private val prefsManager by lazy {
++        (requireActivity().application as FitTrackerApplication).userPreferencesManager
++    }
+ 
+     // Get the shared ViewModel
+     private val viewModel: AuthViewModel by viewModels {
+@@ -55,7 +62,7 @@
+         apiDataButton = view.findViewById(R.id.apiDataButton)
+         workoutsButton = view.findViewById(R.id.workoutsButton)
+         progressButton = view.findViewById(R.id.progressButton)
+-        settingsButton = view.findViewById(R.id.settingsButton)
++        settingsButton = view.findViewById(R.id.settingsButton) // ADDED: Initialize settings button
+     }
+ 
+     private fun setupClickListeners() {
+@@ -63,29 +70,103 @@
+             viewModel.logout()
+         }
+ 
+-        // Navigate to local exercises
++        // Navigare către exerciții locale
+         exercisesButton.setOnClickListener {
+             findNavController().navigate(R.id.exercisesFragment)
+         }
+ 
+-        // Navigate to external API data
++        // Navigare către date externe API
+         apiDataButton.setOnClickListener {
+             findNavController().navigate(R.id.action_profile_to_api_data)
+         }
+ 
+-        // Navigate to Settings
++        // ADDED: Navigare către Settings
+         settingsButton.setOnClickListener {
+             findNavController().navigate(R.id.action_profile_to_settings)
+         }
+ 
+-        // My Workouts - Coming Soon
++        // TEST SHARED PREFERENCES - DOUBLE CLICK pe My Workouts
++        var clickCount = 0
+         workoutsButton.setOnClickListener {
+-            Toast.makeText(context, "🏋️ My Workouts feature coming soon!", Toast.LENGTH_SHORT).show()
++            clickCount++
++            if (clickCount == 1) {
++                Toast.makeText(context, "🔄 Click again to TEST SharedPreferences!", Toast.LENGTH_SHORT).show()
++                // Reset counter după 2 secunde
++                view?.postDelayed({ clickCount = 0 }, 2000)
++            } else if (clickCount == 2) {
++                testSharedPreferences()
++                clickCount = 0
++            }
+         }
+ 
+-        // Track Progress - Coming Soon
++        // SHOW CURRENT SETTINGS - Long press pe Track Progress
++        progressButton.setOnLongClickListener {
++            showCurrentPreferencesDialog()
++            true
++        }
++
++        // Short click pe progress - placeholder
+         progressButton.setOnClickListener {
+-            Toast.makeText(context, "📊 Progress tracking feature coming soon!", Toast.LENGTH_SHORT).show()
++            Toast.makeText(context, "📊 Progress tracking coming soon! Long press to see settings.", Toast.LENGTH_SHORT).show()
++        }
++    }
++
++    private fun testSharedPreferences() {
++        try {
++            // STEP 1: Salvează setări noi pentru test
++            prefsManager.setDarkMode(true)
++            prefsManager.setWeeklyWorkoutGoal(5)
++            prefsManager.setDefaultRestTime(90)
++            prefsManager.setNotificationsEnabled(false)
++            prefsManager.setUnits(Units.IMPERIAL)
++            prefsManager.setKeepScreenOn(true)
++
++            Toast.makeText(context, "✅ Test settings SAVED! Long press 'Track Progress' to view or go to Settings.", Toast.LENGTH_LONG).show()
++
++            // Log pentru debugging
++            android.util.Log.d("SharedPrefsTest", "✅ All SharedPreferences saved successfully!")
++
++        } catch (e: Exception) {
++            Toast.makeText(context, "❌ Error saving test settings: ${e.message}", Toast.LENGTH_LONG).show()
++            android.util.Log.e("SharedPrefsTest", "Error testing SharedPreferences", e)
++        }
++    }
++
++    private fun showCurrentPreferencesDialog() {
++        try {
++            val settings = StringBuilder()
++            settings.append("📱 CURRENT SETTINGS:\n\n")
++            settings.append("🌙 Dark Mode: ${if (prefsManager.getDarkMode()) "ON" else "OFF"}\n\n")
++            settings.append("📏 Units: ${prefsManager.getUnits().displayName}\n\n")
++            settings.append("🔔 Notifications: ${if (prefsManager.getNotificationsEnabled()) "ON" else "OFF"}\n\n")
++            settings.append("⏱️ Rest Time: ${prefsManager.getDefaultRestTime()} seconds\n\n")
++            settings.append("🎯 Weekly Goal: ${prefsManager.getWeeklyWorkoutGoal()} workouts\n\n")
++            settings.append("📱 Keep Screen On: ${if (prefsManager.getKeepScreenOn()) "ON" else "OFF"}\n\n")
++            settings.append("💡 Tip: Go to Settings to change these values!")
++
++            AlertDialog.Builder(requireContext())
++                .setTitle("🔧 Current App Settings")
++                .setMessage(settings.toString())
++                .setPositiveButton("OK") { _, _ -> }
++                .setNeutralButton("Clear All") { _, _ ->
++                    clearAllPreferences()
++                }
++                .setNegativeButton("Settings") { _, _ ->
++                    findNavController().navigate(R.id.action_profile_to_settings)
++                }
++                .show()
++
++        } catch (e: Exception) {
++            Toast.makeText(context, "❌ Error reading settings: ${e.message}", Toast.LENGTH_SHORT).show()
++        }
++    }
++
++    private fun clearAllPreferences() {
++        try {
++            prefsManager.clearAllPreferences()
++            Toast.makeText(context, "🗑️ All settings reset to defaults! Check Settings or test again.", Toast.LENGTH_SHORT).show()
++        } catch (e: Exception) {
++            Toast.makeText(context, "❌ Error clearing settings: ${e.message}", Toast.LENGTH_SHORT).show()
+         }
+     }
+ 
