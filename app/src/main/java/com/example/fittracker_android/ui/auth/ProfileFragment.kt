@@ -1,6 +1,5 @@
 package com.example.fittracker_android.ui.auth
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.fittracker_android.FitTrackerApplication
 import com.example.fittracker_android.R
-import com.example.fittracker_android.data.local.Units
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
@@ -25,12 +23,7 @@ class ProfileFragment : Fragment() {
     private lateinit var apiDataButton: MaterialButton
     private lateinit var workoutsButton: MaterialButton
     private lateinit var progressButton: MaterialButton
-    private lateinit var settingsButton: MaterialButton // ADDED: Settings button
-
-    // SharedPreferences Manager
-    private val prefsManager by lazy {
-        (requireActivity().application as FitTrackerApplication).userPreferencesManager
-    }
+    private lateinit var settingsButton: MaterialButton
 
     // Get the shared ViewModel
     private val viewModel: AuthViewModel by viewModels {
@@ -62,7 +55,7 @@ class ProfileFragment : Fragment() {
         apiDataButton = view.findViewById(R.id.apiDataButton)
         workoutsButton = view.findViewById(R.id.workoutsButton)
         progressButton = view.findViewById(R.id.progressButton)
-        settingsButton = view.findViewById(R.id.settingsButton) // ADDED: Initialize settings button
+        settingsButton = view.findViewById(R.id.settingsButton)
     }
 
     private fun setupClickListeners() {
@@ -70,103 +63,29 @@ class ProfileFragment : Fragment() {
             viewModel.logout()
         }
 
-        // Navigare către exerciții locale
+        // Navigate to local exercises
         exercisesButton.setOnClickListener {
             findNavController().navigate(R.id.exercisesFragment)
         }
 
-        // Navigare către date externe API
+        // Navigate to external API data
         apiDataButton.setOnClickListener {
             findNavController().navigate(R.id.action_profile_to_api_data)
         }
 
-        // ADDED: Navigare către Settings
+        // Navigate to Settings
         settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_profile_to_settings)
         }
 
-        // TEST SHARED PREFERENCES - DOUBLE CLICK pe My Workouts
-        var clickCount = 0
+        // My Workouts - Coming Soon
         workoutsButton.setOnClickListener {
-            clickCount++
-            if (clickCount == 1) {
-                Toast.makeText(context, "🔄 Click again to TEST SharedPreferences!", Toast.LENGTH_SHORT).show()
-                // Reset counter după 2 secunde
-                view?.postDelayed({ clickCount = 0 }, 2000)
-            } else if (clickCount == 2) {
-                testSharedPreferences()
-                clickCount = 0
-            }
+            Toast.makeText(context, "🏋️ My Workouts feature coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-        // SHOW CURRENT SETTINGS - Long press pe Track Progress
-        progressButton.setOnLongClickListener {
-            showCurrentPreferencesDialog()
-            true
-        }
-
-        // Short click pe progress - placeholder
+        // Track Progress - Coming Soon
         progressButton.setOnClickListener {
-            Toast.makeText(context, "📊 Progress tracking coming soon! Long press to see settings.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun testSharedPreferences() {
-        try {
-            // STEP 1: Salvează setări noi pentru test
-            prefsManager.setDarkMode(true)
-            prefsManager.setWeeklyWorkoutGoal(5)
-            prefsManager.setDefaultRestTime(90)
-            prefsManager.setNotificationsEnabled(false)
-            prefsManager.setUnits(Units.IMPERIAL)
-            prefsManager.setKeepScreenOn(true)
-
-            Toast.makeText(context, "✅ Test settings SAVED! Long press 'Track Progress' to view or go to Settings.", Toast.LENGTH_LONG).show()
-
-            // Log pentru debugging
-            android.util.Log.d("SharedPrefsTest", "✅ All SharedPreferences saved successfully!")
-
-        } catch (e: Exception) {
-            Toast.makeText(context, "❌ Error saving test settings: ${e.message}", Toast.LENGTH_LONG).show()
-            android.util.Log.e("SharedPrefsTest", "Error testing SharedPreferences", e)
-        }
-    }
-
-    private fun showCurrentPreferencesDialog() {
-        try {
-            val settings = StringBuilder()
-            settings.append("📱 CURRENT SETTINGS:\n\n")
-            settings.append("🌙 Dark Mode: ${if (prefsManager.getDarkMode()) "ON" else "OFF"}\n\n")
-            settings.append("📏 Units: ${prefsManager.getUnits().displayName}\n\n")
-            settings.append("🔔 Notifications: ${if (prefsManager.getNotificationsEnabled()) "ON" else "OFF"}\n\n")
-            settings.append("⏱️ Rest Time: ${prefsManager.getDefaultRestTime()} seconds\n\n")
-            settings.append("🎯 Weekly Goal: ${prefsManager.getWeeklyWorkoutGoal()} workouts\n\n")
-            settings.append("📱 Keep Screen On: ${if (prefsManager.getKeepScreenOn()) "ON" else "OFF"}\n\n")
-            settings.append("💡 Tip: Go to Settings to change these values!")
-
-            AlertDialog.Builder(requireContext())
-                .setTitle("🔧 Current App Settings")
-                .setMessage(settings.toString())
-                .setPositiveButton("OK") { _, _ -> }
-                .setNeutralButton("Clear All") { _, _ ->
-                    clearAllPreferences()
-                }
-                .setNegativeButton("Settings") { _, _ ->
-                    findNavController().navigate(R.id.action_profile_to_settings)
-                }
-                .show()
-
-        } catch (e: Exception) {
-            Toast.makeText(context, "❌ Error reading settings: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun clearAllPreferences() {
-        try {
-            prefsManager.clearAllPreferences()
-            Toast.makeText(context, "🗑️ All settings reset to defaults! Check Settings or test again.", Toast.LENGTH_SHORT).show()
-        } catch (e: Exception) {
-            Toast.makeText(context, "❌ Error clearing settings: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "📊 Progress tracking feature coming soon!", Toast.LENGTH_SHORT).show()
         }
     }
 
