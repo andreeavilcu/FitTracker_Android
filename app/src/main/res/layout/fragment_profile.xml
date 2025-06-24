@@ -121,6 +121,8 @@
         android:layout_height="wrap_content"
         android:text="@string/logout"
         android:layout_marginBottom="32dp"
+        android:background="@drawable/button_selector"
+        android:textColor="@color/purple_text_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
