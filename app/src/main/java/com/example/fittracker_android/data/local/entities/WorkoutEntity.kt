@@ -18,15 +18,15 @@ data class WorkoutEntity(
     val type: WorkoutType,
     val timestamp: Long = System.currentTimeMillis(),
 
-    val duration: Int, // in minutes
+    val duration: Int,
     val caloriesBurned: Int? = null,
     val notes: String? = null,
 
     val isCompleted: Boolean = false,
-    val isTemplate: Boolean = false, // Can be saved as template for future use
+    val isTemplate: Boolean = false,
 
-    // Store exercise IDs as comma-separated string
-    val exercises: String = "", // "exercise1,exercise2,exercise3"
+
+    val exercises: String = "",
 
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis()

@@ -25,7 +25,6 @@ class ProfileFragment : Fragment() {
     private lateinit var progressButton: MaterialButton
     private lateinit var settingsButton: MaterialButton
 
-    // Get the shared ViewModel
     private val viewModel: AuthViewModel by viewModels {
         AuthViewModelFactory(
             (requireActivity().application as FitTrackerApplication).userRepository
@@ -63,27 +62,22 @@ class ProfileFragment : Fragment() {
             viewModel.logout()
         }
 
-        // Navigate to local exercises
         exercisesButton.setOnClickListener {
             findNavController().navigate(R.id.exercisesFragment)
         }
 
-        // Navigate to external API data
         apiDataButton.setOnClickListener {
             findNavController().navigate(R.id.action_profile_to_api_data)
         }
 
-        // Navigate to Settings
         settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_profile_to_settings)
         }
 
-        // My Workouts - Coming Soon
         workoutsButton.setOnClickListener {
             Toast.makeText(context, "🏋️ My Workouts feature coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-        // Track Progress - Coming Soon
         progressButton.setOnClickListener {
             Toast.makeText(context, "📊 Progress tracking feature coming soon!", Toast.LENGTH_SHORT).show()
         }

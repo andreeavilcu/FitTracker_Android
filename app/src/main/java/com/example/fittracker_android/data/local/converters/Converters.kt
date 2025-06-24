@@ -9,49 +9,42 @@ import com.example.fittracker_android.data.model.*
  */
 class Converters {
 
-    // Gender conversions
     @TypeConverter
     fun fromGender(gender: Gender?): String? = gender?.name
 
     @TypeConverter
     fun toGender(gender: String?): Gender? = gender?.let { Gender.valueOf(it) }
 
-    // FitnessLevel conversions
     @TypeConverter
     fun fromFitnessLevel(level: FitnessLevel): String = level.name
 
     @TypeConverter
     fun toFitnessLevel(level: String): FitnessLevel = FitnessLevel.valueOf(level)
 
-    // ExerciseType conversions
     @TypeConverter
     fun fromExerciseType(type: ExerciseType): String = type.name
 
     @TypeConverter
     fun toExerciseType(type: String): ExerciseType = ExerciseType.valueOf(type)
 
-    // DifficultyLevel conversions
     @TypeConverter
     fun fromDifficultyLevel(level: DifficultyLevel): String = level.name
 
     @TypeConverter
     fun toDifficultyLevel(level: String): DifficultyLevel = DifficultyLevel.valueOf(level)
 
-    // WorkoutType conversions
     @TypeConverter
     fun fromWorkoutType(type: WorkoutType): String = type.name
 
     @TypeConverter
     fun toWorkoutType(type: String): WorkoutType = WorkoutType.valueOf(type)
 
-    // Mood conversions
     @TypeConverter
     fun fromMood(mood: Mood?): String? = mood?.name
 
     @TypeConverter
     fun toMood(mood: String?): Mood? = mood?.let { Mood.valueOf(it) }
 
-    // MuscleGroup list conversions (stored as comma-separated string)
     @TypeConverter
     fun fromMuscleGroupList(groups: List<MuscleGroup>): String {
         return groups.joinToString(",") { it.name }
@@ -63,7 +56,6 @@ class Converters {
         else groups.split(",").map { MuscleGroup.valueOf(it.trim()) }
     }
 
-    // Equipment list conversions (stored as comma-separated string)
     @TypeConverter
     fun fromEquipmentList(equipment: List<Equipment>): String {
         return equipment.joinToString(",") { it.name }
@@ -75,7 +67,6 @@ class Converters {
         else equipment.split(",").map { Equipment.valueOf(it.trim()) }
     }
 
-    // String list conversions (for exercise IDs, etc.)
     @TypeConverter
     fun fromStringList(strings: List<String>): String {
         return strings.joinToString(",")

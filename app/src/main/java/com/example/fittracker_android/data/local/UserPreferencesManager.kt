@@ -207,7 +207,6 @@ class UserPreferencesManager(context: Context) {
     }
 }
 
-// Enum pentru units (dacă nu există deja în modelele tale)
 enum class Units(val displayName: String) {
     METRIC("Metric (kg, cm)"),
     IMPERIAL("Imperial (lbs, ft/in)")

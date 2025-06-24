@@ -26,9 +26,9 @@ data class ExerciseSetEntity(
     val exerciseLogId: String,
 
     val reps: Int? = null,
-    val weight: Float? = null, // in kg or lbs
-    val duration: Int? = null, // in seconds (for time-based exercises)
-    val restTime: Int? = null, // in seconds
+    val weight: Float? = null,
+    val duration: Int? = null,
+    val restTime: Int? = null,
     val setNumber: Int,
     val isWarmupSet: Boolean = false,
     val isCompleted: Boolean = true,

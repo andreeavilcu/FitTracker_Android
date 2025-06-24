@@ -21,16 +21,12 @@ import kotlinx.coroutines.launch
  */
 class AuthViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    // UI State - what the screen should show
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState
 
-    // Current logged-in user
     val currentUser = userRepository.observeLoggedInUser()
 
-    // Login function
     fun login(email: String, password: String) {
-        // Don't process if already loading
         if (_uiState.value.isLoading) return
 
         viewModelScope.launch {
@@ -52,7 +48,6 @@ class AuthViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    // Register function
     fun register(
         email: String,
         password: String,
@@ -83,28 +78,24 @@ class AuthViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    // Logout function
     fun logout() {
         viewModelScope.launch {
             userRepository.logout()
-            _uiState.value = AuthUiState() // Reset to initial state
+            _uiState.value = AuthUiState()
         }
     }
 
-    // Clear any errors
     fun clearError() {
         _uiState.value = _uiState.value.copy(error = null)
     }
 }
 
-// Data class to hold UI state
 data class AuthUiState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false,
     val error: String? = null
 )
 
-// Factory to create ViewModels with parameters
 class AuthViewModelFactory(
     private val userRepository: UserRepository
 ) : ViewModelProvider.Factory {

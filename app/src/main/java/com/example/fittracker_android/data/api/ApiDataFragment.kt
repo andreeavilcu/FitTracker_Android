@@ -60,24 +60,22 @@ class ApiDataFragment : Fragment() {
         setupSearch()
         observeViewModel()
 
-        // Load default data
         viewModel.loadExercisesByMuscle("chest")
     }
 
     private fun initializeViews(view: View) {
         recyclerViewExercises = view.findViewById(R.id.recyclerViewExercises)
         recyclerViewNutrition = view.findViewById(R.id.recyclerViewNutrition)
-        recyclerViewQuotes = view.findViewById(R.id.recyclerViewQuotes) // ✨ ADAUGĂ
+        recyclerViewQuotes = view.findViewById(R.id.recyclerViewQuotes)
         searchEditText = view.findViewById(R.id.searchEditText)
         nutritionSearchEditText = view.findViewById(R.id.nutritionSearchEditText)
         chipGroupMuscles = view.findViewById(R.id.chipGroupMuscles)
         progressIndicator = view.findViewById(R.id.progressIndicator)
         buttonSearchNutrition = view.findViewById(R.id.buttonSearchNutrition)
-        buttonLoadQuotes = view.findViewById(R.id.buttonLoadQuotes) // ✨ ADAUGĂ
+        buttonLoadQuotes = view.findViewById(R.id.buttonLoadQuotes)
     }
 
     private fun setupRecyclerViews() {
-        // Setup External Exercises RecyclerView
         externalExerciseAdapter = ExternalExerciseAdapter { exercise ->
             Toast.makeText(context, "Selected: ${exercise.name}", Toast.LENGTH_SHORT).show()
         }
@@ -87,7 +85,6 @@ class ApiDataFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        // Setup Nutrition RecyclerView
         nutritionAdapter = NutritionAdapter()
 
         recyclerViewNutrition.apply {
@@ -95,7 +92,6 @@ class ApiDataFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        // ✨ ADAUGĂ: Setup Quotes RecyclerView
         quoteAdapter = QuoteAdapter()
 
         recyclerViewQuotes.apply {
@@ -105,7 +101,6 @@ class ApiDataFragment : Fragment() {
     }
 
     private fun setupSearch() {
-        // Muscle group chips
         chipGroupMuscles.setOnCheckedStateChangeListener { _, checkedIds ->
             when {
                 checkedIds.contains(R.id.chipChest) -> viewModel.loadExercisesByMuscle("chest")
@@ -115,7 +110,6 @@ class ApiDataFragment : Fragment() {
             }
         }
 
-        // Nutrition search
         buttonSearchNutrition.setOnClickListener {
             val foodName = nutritionSearchEditText.text.toString().trim()
             if (foodName.isNotEmpty()) {
@@ -123,7 +117,6 @@ class ApiDataFragment : Fragment() {
             }
         }
 
-        // ✨ ADAUGĂ: Quotes button
         buttonLoadQuotes.setOnClickListener {
             viewModel.loadDefaultQuotes()
         }
@@ -153,7 +146,6 @@ class ApiDataFragment : Fragment() {
             }
         }
 
-        // ✨ ADAUGĂ: Observe quotes
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.motivationalQuotes.collect { quotes ->
                 quoteAdapter.submitList(quotes)

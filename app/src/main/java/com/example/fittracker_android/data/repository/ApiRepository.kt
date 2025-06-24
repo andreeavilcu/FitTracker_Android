@@ -97,14 +97,12 @@ class ApiRepository {
                 if (response.isSuccessful) {
                     val apiQuotes = response.body()
 
-                    // Verifică dacă API-ul a returnat citate valide
                     if (!apiQuotes.isNullOrEmpty() && apiQuotes.all { !it.text.isNullOrBlank() }) {
                         android.util.Log.d("ApiRepository", "✅ Successfully loaded ${apiQuotes.size} quotes from API")
                         return@withContext Result.success(apiQuotes)
                     }
                 }
 
-                // Fallback la citate implicite
                 android.util.Log.w("ApiRepository", "⚠️ API failed or returned invalid data, using default quotes")
                 getDefaultQuotes()
 
@@ -120,7 +118,7 @@ class ApiRepository {
      */
     private fun getDefaultQuotes(): Result<List<QuoteApiModel>> {
         return try {
-            val randomQuotes = defaultQuotes.shuffled().take(5) // Ia 5 citate aleatorii
+            val randomQuotes = defaultQuotes.shuffled().take(5)
             android.util.Log.d("ApiRepository", "📚 Using ${randomQuotes.size} default quotes")
             Result.success(randomQuotes)
         } catch (e: Exception) {

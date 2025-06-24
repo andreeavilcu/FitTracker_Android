@@ -18,19 +18,17 @@ data class WorkoutLogEntity(
 
     val startTime: Long,
     val endTime: Long,
-    val duration: Int, // in minutes
+    val duration: Int,
 
     val caloriesBurned: Int? = null,
 
-    val perceivedEffort: Int? = null, // 1-10 scale
+    val perceivedEffort: Int? = null,
     val mood: Mood? = null,
     val notes: String? = null,
 
-    // Location data
     val latitude: Double? = null,
     val longitude: Double? = null,
 
-    // Heart rate data
     val heartRateAvg: Int? = null,
     val heartRateMax: Int? = null,
 

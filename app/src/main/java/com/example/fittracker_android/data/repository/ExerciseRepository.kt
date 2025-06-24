@@ -12,35 +12,28 @@ import java.util.UUID
  */
 class ExerciseRepository(private val exerciseDao: ExerciseDao) {
 
-    // Observe all exercises
     fun getAllExercises(): Flow<List<ExerciseEntity>> = exerciseDao.getAllExercises()
 
 
 
-    // Get exercises by muscle group
     fun getExercisesByMuscleGroup(muscleGroup: MuscleGroup): Flow<List<ExerciseEntity>> =
         exerciseDao.getExercisesByMuscleGroup(muscleGroup.name)
 
-    // Get custom exercises by user
     fun getCustomExercisesByUser(userId: String): Flow<List<ExerciseEntity>> =
         exerciseDao.getCustomExercisesByUser(userId)
 
-    // Search exercises
     fun searchExercises(query: String): Flow<List<ExerciseEntity>> =
         exerciseDao.searchExercises(query)
 
-    // Get single exercise
     suspend fun getExerciseById(exerciseId: String): ExerciseEntity? =
         exerciseDao.getExerciseById(exerciseId)
 
-    // Get exercises for RecyclerView (immediate list)
     suspend fun getAllExercisesList(): List<ExerciseEntity> =
         exerciseDao.getAllExercisesList()
 
     suspend fun getExercisesByTypeList(type: ExerciseType): List<ExerciseEntity> =
         exerciseDao.getExercisesByTypeList(type)
 
-    // Create new exercise
     suspend fun createExercise(
         name: String,
         description: String,
@@ -49,7 +42,7 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
         muscleGroups: List<MuscleGroup>,
         difficulty: DifficultyLevel = DifficultyLevel.INTERMEDIATE,
         equipmentRequired: List<Equipment> = emptyList(),
-        userId: String? = null // For custom exercises
+        userId: String? = null
     ): Result<ExerciseEntity> {
         return try {
             val exercise = ExerciseEntity(
@@ -72,7 +65,6 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
         }
     }
 
-    // Update exercise
     suspend fun updateExercise(exercise: ExerciseEntity): Result<Unit> {
         return try {
             exerciseDao.updateExercise(exercise)
@@ -82,7 +74,6 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
         }
     }
 
-    // Delete exercise
     suspend fun deleteExercise(exerciseId: String): Result<Unit> {
         return try {
             exerciseDao.deleteExerciseById(exerciseId)
@@ -92,11 +83,10 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
         }
     }
 
-    // Populate with default exercises
     suspend fun populateDefaultExercises() {
         return try {
             val existingCount = exerciseDao.getExerciseCount()
-            if (existingCount > 0) return // Already populated
+            if (existingCount > 0) return
 
             val defaultExercises = getDefaultExercises()
             exerciseDao.insertExercises(defaultExercises)
@@ -106,10 +96,8 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
         }
     }
 
-    // Helper function to get default exercises
     private fun getDefaultExercises(): List<ExerciseEntity> {
         return listOf(
-            // Chest exercises
             ExerciseEntity(
                 id = UUID.randomUUID().toString(),
                 name = "Push-ups",
@@ -134,7 +122,6 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
                 defaultSets = 3,
                 defaultReps = 10
             ),
-            // Back exercises
             ExerciseEntity(
                 id = UUID.randomUUID().toString(),
                 name = "Pull-ups",
@@ -147,7 +134,6 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
                 defaultSets = 3,
                 defaultReps = 8
             ),
-            // Cardio exercises
             ExerciseEntity(
                 id = UUID.randomUUID().toString(),
                 name = "Running",
@@ -160,7 +146,6 @@ class ExerciseRepository(private val exerciseDao: ExerciseDao) {
                 defaultDuration = 30,
                 defaultDistance = 5.0f
             ),
-            // Leg exercises
             ExerciseEntity(
                 id = UUID.randomUUID().toString(),
                 name = "Squats",

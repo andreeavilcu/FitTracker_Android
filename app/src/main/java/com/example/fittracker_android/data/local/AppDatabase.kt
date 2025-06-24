@@ -21,7 +21,7 @@ import com.example.fittracker_android.data.local.entities.*
         ExerciseSetEntity::class,
         UserProgressEntity::class
     ],
-    version = 2, // Increment version when changing schema
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -46,7 +46,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "fitness_tracker_database"
                 )
-                    .fallbackToDestructiveMigration() // Will recreate DB on schema changes
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

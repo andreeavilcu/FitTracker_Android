@@ -17,7 +17,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsFragment : Fragment() {
 
-    // UI Components
     private lateinit var toolbar: MaterialToolbar
     private lateinit var switchDarkMode: SwitchMaterial
     private lateinit var switchNotifications: SwitchMaterial
@@ -27,7 +26,6 @@ class SettingsFragment : Fragment() {
     private lateinit var buttonWeeklyGoal: Button
     private lateinit var buttonResetSettings: Button
 
-    // SharedPreferences Manager
     private val prefsManager by lazy {
         (requireActivity().application as FitTrackerApplication).userPreferencesManager
     }
@@ -61,12 +59,10 @@ class SettingsFragment : Fragment() {
 
     private fun loadCurrentSettings() {
         try {
-            // Load current values from SharedPreferences
             switchDarkMode.isChecked = prefsManager.getDarkMode()
             switchNotifications.isChecked = prefsManager.getNotificationsEnabled()
             switchKeepScreenOn.isChecked = prefsManager.getKeepScreenOn()
 
-            // Update button texts
             updateUnitsButton()
             updateRestTimeButton()
             updateWeeklyGoalButton()
@@ -77,45 +73,37 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        // Toolbar back button
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
-        // DARK MODE SWITCH
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             prefsManager.setDarkMode(isChecked)
             showToast("🌙 Dark Mode: ${if (isChecked) "ON" else "OFF"}")
         }
 
-        // NOTIFICATIONS SWITCH
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             prefsManager.setNotificationsEnabled(isChecked)
             showToast("🔔 Notifications: ${if (isChecked) "ON" else "OFF"}")
         }
 
-        // KEEP SCREEN ON SWITCH
         switchKeepScreenOn.setOnCheckedChangeListener { _, isChecked ->
             prefsManager.setKeepScreenOn(isChecked)
             showToast("📱 Keep Screen On: ${if (isChecked) "ON" else "OFF"}")
         }
 
-        // UNITS BUTTON
         buttonUnits.setOnClickListener {
             showUnitsDialog()
         }
 
-        // REST TIME BUTTON
         buttonRestTime.setOnClickListener {
             showRestTimeDialog()
         }
 
-        // WEEKLY GOAL BUTTON
         buttonWeeklyGoal.setOnClickListener {
             showWeeklyGoalDialog()
         }
 
-        // RESET SETTINGS BUTTON
         buttonResetSettings.setOnClickListener {
             showResetConfirmDialog()
         }
@@ -191,7 +179,7 @@ class SettingsFragment : Fragment() {
     private fun resetAllSettings() {
         try {
             prefsManager.clearAllPreferences()
-            loadCurrentSettings() // Reload UI with default values
+            loadCurrentSettings()
             showToast("🗑️ All settings reset to defaults")
         } catch (e: Exception) {
             showToast("❌ Error resetting settings: ${e.message}")
