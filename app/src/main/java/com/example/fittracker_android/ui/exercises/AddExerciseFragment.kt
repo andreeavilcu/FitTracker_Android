@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 
 class AddExerciseFragment : Fragment() {
 
-    // Views
     private lateinit var toolbar: MaterialToolbar
     private lateinit var nameEditText: EditText
     private lateinit var descriptionEditText: EditText
@@ -36,7 +35,6 @@ class AddExerciseFragment : Fragment() {
     private lateinit var saveButton: Button
     private lateinit var progressBar: ProgressBar
 
-    // ViewModel
     private val exercisesViewModel: ExercisesViewModel by viewModels {
         ExercisesViewModelFactory(
             (requireActivity().application as FitTrackerApplication).exerciseRepository
@@ -71,46 +69,38 @@ class AddExerciseFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        // Toolbar back button
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
-        // Save button
         saveButton.setOnClickListener {
             saveExercise()
         }
     }
 
     private fun saveExercise() {
-        // Get values from form
         val name = nameEditText.text.toString().trim()
         val description = descriptionEditText.text.toString().trim()
         val instructions = instructionsEditText.text.toString().trim()
 
-        // Validation
         if (!validateInput(name, instructions)) {
             return
         }
 
-        // Get selected exercise type
         val selectedType = getSelectedExerciseType()
         if (selectedType == null) {
             Toast.makeText(context, "Please select an exercise type", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Get selected muscle groups
         val selectedMuscles = getSelectedMuscleGroups()
         if (selectedMuscles.isEmpty()) {
             Toast.makeText(context, "Please select at least one muscle group", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Get current user ID (you might need to get this from AuthViewModel)
         val userId = getCurrentUserId()
 
-        // Save exercise
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 progressBar.isVisible = true
@@ -211,16 +201,12 @@ class AddExerciseFragment : Fragment() {
     }
 
     private fun getCurrentUserId(): String {
-        // TODO: Get this from AuthViewModel or UserRepository
-        // For now, return a default ID - you should get the actual logged-in user
         return "current_user_id"
     }
 
     private fun observeViewModel() {
-        // If you need to observe any ViewModel state changes
         viewLifecycleOwner.lifecycleScope.launch {
             exercisesViewModel.uiState.collect { state ->
-                // Handle any UI state changes if needed
                 state.error?.let { error ->
                     Toast.makeText(context, error, Toast.LENGTH_LONG).show()
                 }

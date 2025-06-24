@@ -42,12 +42,10 @@ data class ExerciseApiModel(
     @SerializedName("images")
     val images: List<String>?
 ) {
-    // Helper function pentru a obține instrucțiunile ca listă
     fun getInstructionsList(): List<String> {
         return instructions.split(". ").filter { it.isNotBlank() }
     }
 
-    // Helper function pentru a obține toate grupurile musculare în siguranță
     fun getAllMuscles(): List<String> {
         val primary = primaryMuscles ?: emptyList()
         val secondary = secondaryMuscles ?: emptyList()

@@ -29,7 +29,6 @@ class RegisterStep2Fragment : Fragment() {
 
     private val args: RegisterStep2FragmentArgs by navArgs()
 
-    // Get the shared ViewModel
     private val viewModel: AuthViewModel by viewModels {
         AuthViewModelFactory(
             (requireActivity().application as FitTrackerApplication).userRepository
@@ -46,23 +45,19 @@ class RegisterStep2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize views
         emailInfoTextView = view.findViewById(R.id.emailInfoTextView)
         firstNameEditText = view.findViewById(R.id.firstNameEditText)
         lastNameEditText = view.findViewById(R.id.lastNameEditText)
         ageEditText = view.findViewById(R.id.ageEditText)
         registerButton = view.findViewById(R.id.registerButton)
         progressBar = view.findViewById(R.id.progressBar)
-        // Show the email from previous screen
         emailInfoTextView.text = "Selected email: ${args.email}"
 
-        // Handle register button click
         registerButton.setOnClickListener {
             val firstName = firstNameEditText.text.toString().trim()
             val lastName = lastNameEditText.text.toString().trim()
             val ageText = ageEditText.text.toString().trim()
 
-            // Validation
             when {
                 firstName.isEmpty() -> {
                     firstNameEditText.error = "First name is required"
@@ -74,7 +69,6 @@ class RegisterStep2Fragment : Fragment() {
                 }
             }
 
-            // Parse age (optional field)
             val age = if (ageText.isNotEmpty()) {
                 ageText.toIntOrNull()?.takeIf { it in 1..150 }
             } else null
@@ -84,14 +78,12 @@ class RegisterStep2Fragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // Get password from navigation args (passed from RegisterStep1)
             val password = args.password
             if (password.isEmpty()) {
                 Toast.makeText(context, "Password missing, please go back", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            // Perform registration
             viewModel.register(
                 email = args.email,
                 password = password,
@@ -101,22 +93,17 @@ class RegisterStep2Fragment : Fragment() {
             )
         }
 
-        // Observe registration state
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                // Enable/disable button based on loading state
                 progressBar.isVisible = state.isLoading
                 registerButton.isEnabled = !state.isLoading
 
-                // Show error if any
                 state.error?.let {
                     Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                     viewModel.clearError()
                 }
 
-                // Navigate to profile if registration successful
                 if (state.isLoggedIn) {
-                    // Show success message
                     Toast.makeText(
                         context,
                         "Registration successful! Please login with your credentials.",

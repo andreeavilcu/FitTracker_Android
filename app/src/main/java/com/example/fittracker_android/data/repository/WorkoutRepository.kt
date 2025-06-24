@@ -17,7 +17,6 @@ class WorkoutRepository(
     private val exerciseSetDao: ExerciseSetDao
 ) {
 
-    // WORKOUT OPERATIONS
     fun getWorkoutsByUser(userId: String): Flow<List<WorkoutEntity>> =
         workoutDao.getWorkoutsByUser(userId)
 
@@ -30,7 +29,6 @@ class WorkoutRepository(
     suspend fun getWorkoutById(workoutId: String): WorkoutEntity? =
         workoutDao.getWorkoutById(workoutId)
 
-    // Create new workout
     suspend fun createWorkout(
         userId: String,
         name: String,
@@ -44,7 +42,7 @@ class WorkoutRepository(
                 userId = userId,
                 name = name,
                 type = type,
-                duration = 0, // Will be updated when completed
+                duration = 0,
                 exercises = exerciseIds.joinToString(","),
                 isTemplate = isTemplate
             )
@@ -56,7 +54,6 @@ class WorkoutRepository(
         }
     }
 
-    // WORKOUT LOG OPERATIONS (Completed workouts)
     fun getWorkoutLogsByUser(userId: String): Flow<List<WorkoutLogEntity>> =
         workoutLogDao.getWorkoutLogsByUser(userId)
 
@@ -66,7 +63,6 @@ class WorkoutRepository(
     suspend fun getRecentWorkoutLogs(userId: String, limit: Int = 10): List<WorkoutLogEntity> =
         workoutLogDao.getRecentWorkoutLogs(userId, limit)
 
-    // Start a workout session
     suspend fun startWorkoutSession(
         userId: String,
         workoutId: String? = null
@@ -77,8 +73,8 @@ class WorkoutRepository(
                 userId = userId,
                 workoutId = workoutId,
                 startTime = System.currentTimeMillis(),
-                endTime = System.currentTimeMillis(), // Will be updated when finished
-                duration = 0 // Will be calculated when finished
+                endTime = System.currentTimeMillis(),
+                duration = 0
             )
 
             workoutLogDao.insertWorkoutLog(workoutLog)
@@ -88,7 +84,6 @@ class WorkoutRepository(
         }
     }
 
-    // Finish a workout session
     suspend fun finishWorkoutSession(
         workoutLogId: String,
         caloriesBurned: Int? = null,
@@ -101,7 +96,7 @@ class WorkoutRepository(
                 ?: return Result.failure(Exception("Workout log not found"))
 
             val endTime = System.currentTimeMillis()
-            val duration = ((endTime - workoutLog.startTime) / 1000 / 60).toInt() // minutes
+            val duration = ((endTime - workoutLog.startTime) / 1000 / 60).toInt()
 
             val updatedLog = workoutLog.copy(
                 endTime = endTime,
@@ -119,7 +114,6 @@ class WorkoutRepository(
         }
     }
 
-    // EXERCISE LOG OPERATIONS (Exercises within workouts)
     suspend fun addExerciseToWorkout(
         workoutLogId: String,
         exerciseId: String,
@@ -143,7 +137,6 @@ class WorkoutRepository(
     suspend fun getExerciseLogsByWorkout(workoutLogId: String): List<ExerciseLogEntity> =
         exerciseLogDao.getExerciseLogsByWorkoutLogList(workoutLogId)
 
-    // EXERCISE SET OPERATIONS (Sets within exercises)
     suspend fun addSetToExercise(
         exerciseLogId: String,
         setNumber: Int,
@@ -182,7 +175,6 @@ class WorkoutRepository(
         }
     }
 
-    // STATISTICS
     suspend fun getWorkoutStats(userId: String): WorkoutStats {
         return try {
             WorkoutStats(
@@ -199,7 +191,6 @@ class WorkoutRepository(
     }
 
     private fun getWeekStartTime(): Long {
-        // Calculate start of current week (Monday)
         val now = System.currentTimeMillis()
         val calendar = java.util.Calendar.getInstance()
         calendar.timeInMillis = now
@@ -212,7 +203,6 @@ class WorkoutRepository(
     }
 
     private fun getMonthStartTime(): Long {
-        // Calculate start of current month
         val now = System.currentTimeMillis()
         val calendar = java.util.Calendar.getInstance()
         calendar.timeInMillis = now
@@ -225,10 +215,9 @@ class WorkoutRepository(
     }
 }
 
-// Data class for workout statistics
 data class WorkoutStats(
     val totalWorkouts: Int = 0,
-    val totalTime: Int = 0, // in minutes
+    val totalTime: Int = 0,
     val totalCalories: Int = 0,
     val averageWorkoutTime: Float = 0f,
     val workoutsThisWeek: Int = 0,

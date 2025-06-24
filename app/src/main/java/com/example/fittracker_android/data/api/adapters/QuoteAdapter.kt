@@ -31,10 +31,8 @@ class QuoteAdapter : ListAdapter<QuoteApiModel, QuoteAdapter.ViewHolder>(QuoteDi
         private val textAuthor: TextView = itemView.findViewById(R.id.textAuthor)
 
         fun bind(quote: QuoteApiModel) {
-            // 💭 Quote text cu formatare specială
             textQuote.text = "\"${quote.text}\""
 
-            // ✍️ Author cu formatare
             textAuthor.text = if (quote.author.isNotEmpty()) {
                 "— ${quote.author}"
             } else {

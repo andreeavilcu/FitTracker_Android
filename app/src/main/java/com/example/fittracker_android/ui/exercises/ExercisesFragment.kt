@@ -120,7 +120,6 @@ class ExercisesFragment: Fragment() {
                 findNavController().navigate(R.id.action_exercises_to_add_exercise)
             } catch (e: Exception) {
                 Toast.makeText(context, "Navigation error: ${e.message}", Toast.LENGTH_LONG).show()
-                // Fallback - creează fragmentul manual
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment, AddExerciseFragment())
                     .addToBackStack(null)

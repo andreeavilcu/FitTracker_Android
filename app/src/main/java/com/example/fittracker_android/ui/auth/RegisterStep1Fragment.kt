@@ -32,7 +32,6 @@ class RegisterStep1Fragment : Fragment() {
         passwordEditText = view.findViewById(R.id.passwordEditText)
         nextButton = view.findViewById(R.id.nextButton)
 
-        // Pre-fill fields if coming from login
         args.email?.let { emailEditText.setText(it) }
         args.password?.let { passwordEditText.setText(it) }
 
@@ -40,7 +39,6 @@ class RegisterStep1Fragment : Fragment() {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString()
 
-            // Validation
             when {
                 email.isEmpty() -> {
                     emailEditText.error = "Email is required"
@@ -60,7 +58,6 @@ class RegisterStep1Fragment : Fragment() {
                 }
             }
 
-            // Navigate to step 2 with email
             val action = RegisterStep1FragmentDirections.actionRegisterStep1ToRegisterStep2(
                 email = email,
                 password = password

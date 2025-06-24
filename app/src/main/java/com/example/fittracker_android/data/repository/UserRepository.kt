@@ -19,10 +19,8 @@ import java.util.UUID
  */
 class UserRepository(private val userDao: UserDao) {
 
-    // Watch for the currently logged-in user
     fun observeLoggedInUser(): Flow<UserEntity?> = userDao.observeLoggedInUser()
 
-    // Register a new user
     suspend fun registerUser(
         email: String,
         password: String,
@@ -31,26 +29,22 @@ class UserRepository(private val userDao: UserDao) {
         age: Int?
     ): Result<UserEntity> {
         return try {
-            // Check if email already exists
             val existingUser = userDao.getUserByEmail(email)
             if (existingUser != null) {
                 return Result.failure(Exception("Email already registered"))
             }
 
-            // Create new user with hashed password
             val newUser = UserEntity(
                 id = UUID.randomUUID().toString(),
                 username = "$firstName $lastName",
                 email = email,
                 passwordHash = hashPassword(password),
                 age = age,
-                isLoggedIn = true // Automatically log them in
+                isLoggedIn = true
             )
 
-            // Logout any other users first
             userDao.logoutAllUsers()
 
-            // Insert the new user
             userDao.insertUser(newUser)
 
             Result.success(newUser)
@@ -59,21 +53,17 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
-    // Login existing user
     suspend fun loginUser(email: String, password: String): Result<UserEntity> {
         return try {
             val user = userDao.getUserByEmail(email)
                 ?: return Result.failure(Exception("User not found"))
 
-            // Verify password
             if (user.passwordHash != hashPassword(password)) {
                 return Result.failure(Exception("Invalid password"))
             }
 
-            // Logout any other users
             userDao.logoutAllUsers()
 
-            // Login this user
             userDao.updateLoginStatus(user.id, true)
 
             Result.success(user)
@@ -82,12 +72,10 @@ class UserRepository(private val userDao: UserDao) {
         }
     }
 
-    // Logout current user
     suspend fun logout() {
         userDao.logoutAllUsers()
     }
 
-    // Simple password hashing (in production, use proper encryption!)
     private fun hashPassword(password: String): String {
         val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
         return bytes.joinToString("") { "%02x".format(it) }

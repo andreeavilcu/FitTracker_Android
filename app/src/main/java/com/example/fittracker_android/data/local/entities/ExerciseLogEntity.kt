@@ -24,15 +24,14 @@ data class ExerciseLogEntity(
     val id: String,
 
     val workoutLogId: String,
-    val exerciseId: String, // Just store as String, no foreign key constraint
+    val exerciseId: String,
 
-    // For cardio exercises
     val distance: Float? = null,
-    val pace: Float? = null, // minutes per km/mile
-    val duration: Int? = null, // in seconds
+    val pace: Float? = null,
+    val duration: Int? = null,
 
     val notes: String? = null,
-    val orderInWorkout: Int = 0, // Order of exercise in workout
+    val orderInWorkout: Int = 0,
 
     val createdAt: Long = System.currentTimeMillis()
 )

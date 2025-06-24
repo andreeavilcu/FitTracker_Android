@@ -11,30 +11,24 @@ import java.util.UUID
  */
 class UserProgressRepository(private val userProgressDao: UserProgressDao) {
 
-    // Observe user progress
     fun getProgressByUser(userId: String): Flow<List<UserProgressEntity>> =
         userProgressDao.getProgressByUser(userId)
 
-    // Get progress as list for RecyclerView
     suspend fun getProgressByUserList(userId: String): List<UserProgressEntity> =
         userProgressDao.getProgressByUserList(userId)
 
-    // Get latest progress record
     suspend fun getLatestProgressRecord(userId: String): UserProgressEntity? =
         userProgressDao.getLatestProgressRecord(userId)
 
-    // Get first progress record (to show improvement)
     suspend fun getFirstProgressRecord(userId: String): UserProgressEntity? =
         userProgressDao.getFirstProgressRecord(userId)
 
-    // Get specific metric progress
     fun getWeightProgress(userId: String): Flow<List<UserProgressEntity>> =
         userProgressDao.getWeightProgress(userId)
 
     fun getBodyFatProgress(userId: String): Flow<List<UserProgressEntity>> =
         userProgressDao.getBodyFatProgress(userId)
 
-    // Add new progress record
     suspend fun addProgressRecord(
         userId: String,
         weight: Float? = null,
@@ -83,7 +77,6 @@ class UserProgressRepository(private val userProgressDao: UserProgressDao) {
         }
     }
 
-    // Update progress record
     suspend fun updateProgressRecord(progressRecord: UserProgressEntity): Result<Unit> {
         return try {
             userProgressDao.updateProgressRecord(progressRecord)
@@ -93,7 +86,6 @@ class UserProgressRepository(private val userProgressDao: UserProgressDao) {
         }
     }
 
-    // Delete progress record
     suspend fun deleteProgressRecord(progressId: String): Result<Unit> {
         return try {
             userProgressDao.deleteProgressRecordById(progressId)
@@ -103,7 +95,6 @@ class UserProgressRepository(private val userProgressDao: UserProgressDao) {
         }
     }
 
-    // Get progress statistics
     suspend fun getProgressStats(userId: String): ProgressStats {
         return try {
             val allProgress = userProgressDao.getProgressByUserList(userId)
@@ -124,7 +115,6 @@ class UserProgressRepository(private val userProgressDao: UserProgressDao) {
         }
     }
 
-    // Helper functions for statistics
     private fun calculateWeightChange(first: Float?, latest: Float?): Float? {
         return if (first != null && latest != null) latest - first else null
     }
@@ -147,7 +137,6 @@ class UserProgressRepository(private val userProgressDao: UserProgressDao) {
         val first = sortedProgress.first()
         val latest = sortedProgress.last()
 
-        // Simple trend analysis based on weight (you can expand this)
         return when {
             first.weight != null && latest.weight != null -> {
                 val change = latest.weight!! - first.weight!!
@@ -162,7 +151,6 @@ class UserProgressRepository(private val userProgressDao: UserProgressDao) {
     }
 }
 
-// Data class for progress statistics
 data class ProgressStats(
     val totalRecords: Int = 0,
     val latestWeight: Float? = null,

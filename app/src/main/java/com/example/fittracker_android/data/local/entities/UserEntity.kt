@@ -19,25 +19,21 @@ data class UserEntity(
     val id: String,
     val username: String,
     val email: String,
-    val passwordHash: String, // We'll store hashed passwords, never plain text!
+    val passwordHash: String,
 
 
 
-    // Physical attributes (nullable because user might not set them initially)
     val height: Float? = null,
     val weight: Float? = null,
     val age: Int? = null,
     val gender: Gender? = null,
 
-    // Fitness preferences
     val fitnessLevel: FitnessLevel = FitnessLevel.BEGINNER,
-    val activityGoal: Int = 30, // minutes per day
+    val activityGoal: Int = 30,
     val calorieGoal: Int? = null,
 
-    // Account info
     val joinDate: Long = System.currentTimeMillis(),
     val profileImageUrl: String? = null,
 
-    // Login state
     val isLoggedIn: Boolean = false
 )

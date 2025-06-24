@@ -22,7 +22,6 @@ data class ExerciseEntity(
     val instructions: String,
     val type: ExerciseType,
 
-    // Store as comma-separated string for simplicity
     val muscleGroups: String,
     val difficulty: DifficultyLevel = DifficultyLevel.INTERMEDIATE,
 

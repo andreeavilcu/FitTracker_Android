@@ -42,17 +42,14 @@ class ExternalExerciseAdapter(
         private val chipCategory: Chip = itemView.findViewById(R.id.chipCategory)
 
         fun bind(exercise: ExerciseApiModel) {
-            // FIXED: Gestionează toate câmpurile nullable
             textExerciseName.text = exercise.name ?: "Unknown Exercise"
             textDifficulty.text = "Level: ${exercise.level ?: "Unknown"}"
             textEquipment.text = "Equipment: ${exercise.equipment ?: "None"}"
 
-            // FIXED: Folosind helper function pentru a evita null pointer exception
             val muscles = exercise.getAllMuscles()
                 .joinToString(", ") { it.replaceFirstChar { c -> c.uppercase() } }
             textMuscles.text = if (muscles.isNotEmpty()) "Muscles: $muscles" else "Muscles: Not specified"
 
-            // FIXED: Gestionează cazul când instructions este null
             val instructions = exercise.instructions?.let { instr ->
                 if (instr.length > 100) {
                     instr.take(100) + "..."
@@ -72,7 +69,6 @@ class ExternalExerciseAdapter(
 
     private class ExerciseDiffCallback : DiffUtil.ItemCallback<ExerciseApiModel>() {
         override fun areItemsTheSame(oldItem: ExerciseApiModel, newItem: ExerciseApiModel): Boolean {
-            // FIXED: Gestionează cazul când name poate fi null
             return (oldItem.name ?: "") == (newItem.name ?: "")
         }
 

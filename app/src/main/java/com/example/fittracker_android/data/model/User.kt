@@ -10,43 +10,36 @@ import java.util.UUID
 data class User (
     val id: String = UUID.randomUUID().toString(),
 
-    //informatii de autentificare
     val username: String,
     val email: String,
 
-    //Informatii personale
     val firstName: String? = null,
     val lastName: String? = null,
     val age: Int? = null,
     val gender: Gender? = null,
 
-    // Informații fizice
     val height: Float? = null,
     val weight: Float? = null,
 
-    // Preferințe fitness
     val fitnessLevel: FitnessLevel = FitnessLevel.BEGINNER,
-    val activityGoal: Int = 30, // minute pe zi
-    val calorieGoal: Int? = null, // calorii pe zi
-    val weeklyWorkoutGoal: Int = 3, // antrenamente pe săptămână
+    val activityGoal: Int = 30,
+    val calorieGoal: Int? = null,
+    val weeklyWorkoutGoal: Int = 3,
 
     val preferredUnits: Units = Units.METRIC,
     val notificationsEnabled: Boolean = true,
-    val reminderTime: String? = null, // HH:mm format
+    val reminderTime: String? = null,
 
-    // Metadata
     val joinDate: Long = System.currentTimeMillis(),
     val lastActiveDate: Long = System.currentTimeMillis(),
     val profileImageUrl: String? = null,
 
-    // Statistici calculate (readonly în UI)
     val totalWorkouts: Int = 0,
     val totalCaloriesBurned: Int = 0,
-    val currentStreak: Int = 0, // zile consecutive cu activitate
+    val currentStreak: Int = 0,
     val longestStreak: Int = 0
 )
 {
-    // Proprietăți calculate
     val fullName: String
         get() = when {
             firstName != null && lastName != null -> "$$firstName $lastName"
@@ -85,19 +78,19 @@ data class User (
     val recommendedCalories: Int?
         get() = if (age != null && gender != null && height != null && weight != null) {
             calculateBMR()?.let { bmr ->
-                // Aplicăm factorul de activitate bazat pe fitness level
+
                 val activityFactor = when (fitnessLevel) {
-                    FitnessLevel.BEGINNER -> 1.375f // ușor activ
-                    FitnessLevel.INTERMEDIATE -> 1.55f // moderat activ
-                    FitnessLevel.ADVANCED -> 1.725f // foarte activ
-                    FitnessLevel.EXPERT -> 1.9f // extrem de activ
+                    FitnessLevel.BEGINNER -> 1.375f
+                    FitnessLevel.INTERMEDIATE -> 1.55f
+                    FitnessLevel.ADVANCED -> 1.725f
+                    FitnessLevel.EXPERT -> 1.9f
                 }
                 (bmr * activityFactor).toInt()
             }
         } else null
 
     fun isActive(): Boolean =
-        System.currentTimeMillis() - lastActiveDate < 7 * 24 * 60 * 60 * 1000 // activ în ultimele 7 zile
+        System.currentTimeMillis() - lastActiveDate < 7 * 24 * 60 * 60 * 1000
 
     fun getDaysJoined(): Int =
         ((System.currentTimeMillis() - joinDate) / (24 * 60 * 60 * 1000)).toInt()
@@ -118,19 +111,15 @@ data class User (
         }
 
     fun needsWeightUpdate(): Boolean {
-        // Sugerează actualizarea greutății dacă nu a fost actualizată în ultimele 30 de zile
-        // Aceasta ar trebui implementată cu un timestamp separat pentru ultima actualizare a greutății
         return weight == null
     }
 
     private fun calculateBMR(): Float? {
-        // Harris-Benedict Equation (Revised)
         return if (age != null && gender != null && height != null && weight != null) {
             when (gender) {
                 Gender.MALE -> 88.362f + (13.397f * weight) + (4.799f * height) - (5.677f * age)
                 Gender.FEMALE -> 447.593f + (9.247f * weight) + (3.098f * height) - (4.330f * age)
                 Gender.PREFER_NOT_TO_SAY -> {
-                    // Folosim media dintre masculin și feminin
                     val male = 88.362f + (13.397f * weight) + (4.799f * height) - (5.677f * age)
                     val female = 447.593f + (9.247f * weight) + (3.098f * height) - (4.330f * age)
                     (male + female) / 2f
